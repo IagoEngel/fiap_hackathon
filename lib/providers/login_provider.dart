@@ -12,8 +12,9 @@ class LoginProvider extends ChangeNotifier {
   String errorMessage = '';
 
   Future login(String email, String password) async {
-    hasError = false;
     try {
+      hasError = false;
+
       final UserCredential userCredential =
           await _firebaseAuthService.login(email, password);
       _user = userCredential.user;
@@ -21,11 +22,25 @@ class LoginProvider extends ChangeNotifier {
       hasError = true;
       switch (e.code) {
         case 'invalid-credential':
-          errorMessage = 'Email ou senha incorretos. Verifique suas credenciais';
+          errorMessage =
+              'Email ou senha incorretos. Verifique suas credenciais';
           break;
         default:
           errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
       }
+    }
+  }
+
+  Future createUser(String email, String password) async {
+    try {
+      hasError = false;
+
+      final UserCredential userCredential =
+          await _firebaseAuthService.createUser(email, password);
+      _user = userCredential.user;
+    } catch (e) {
+      hasError = true;
+      errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
     }
   }
 }

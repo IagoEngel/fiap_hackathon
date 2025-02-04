@@ -1,5 +1,6 @@
 import 'package:fiap_hackathon/providers/login_provider.dart';
 import 'package:fiap_hackathon/utils/widgets/custom_filled_button_widget.dart';
+import 'package:fiap_hackathon/utils/widgets/custom_text_button_widget.dart';
 import 'package:fiap_hackathon/utils/widgets/labeled_text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late GlobalKey<FormState> _formKey;
   late TextEditingController _emailController;
-  late TextEditingController _senhaController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _formKey = GlobalKey<FormState>();
     _emailController = TextEditingController(text: 'iagoengel@yahoo.com');
-    _senhaController = TextEditingController(text: 'Teste@123');
+    _passwordController = TextEditingController(text: 'Teste@123');
 
     super.initState();
   }
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _emailController.dispose();
-    _senhaController.dispose();
+    _passwordController.dispose();
 
     super.dispose();
   }
@@ -58,11 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 12),
                 LabeledTextFieldWidget(
-                  controller: _senhaController,
+                  controller: _passwordController,
                   label: 'Senha',
                 ),
                 const SizedBox(height: 32),
-                CustomFilledButtonWidget(onPressed: _login, title: 'AAAAAA'),
+                CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
+                const SizedBox(height: 4),
+                CustomTextButtonWidget(onPressed: _register, title: 'Não tem conta? Faça seu cadastro aqui.'),
                 const Spacer(),
               ],
             ),
@@ -77,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    await _loginProvider.login(_emailController.text, _senhaController.text);
+    await _loginProvider.login(_emailController.text, _passwordController.text);
 
     if (!mounted) return;
 
@@ -91,5 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       return;
     }
+
+    Navigator.pushNamed(context, '/home');
+  }
+
+  void _register() {
+    Navigator.pushNamed(context, '/register');
   }
 }

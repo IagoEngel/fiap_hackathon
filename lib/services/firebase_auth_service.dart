@@ -9,4 +9,13 @@ class FirebaseAuthService {
       rethrow;
     }
   }
+
+  Future createUser(String email, String password) async {
+    try {
+      return await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
