@@ -22,6 +22,13 @@ class LabeledTextFieldWidget extends StatelessWidget {
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Preencha este campo!';
+            }
+
+            return null;
+          },
         ),
       ],
     );
