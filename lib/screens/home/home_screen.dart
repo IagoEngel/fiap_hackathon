@@ -37,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Text('Verificar gráfico de alunos'),
             ),
             FilledButton(
-              onPressed: () {},
-              child: const Text('Inserir contéudo'),
+              onPressed: () => Navigator.pushNamed(context, '/activity-add'),
+              child: const Text('Adicionar atividade'),
             ),
           ],
         ),

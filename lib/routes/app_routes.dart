@@ -1,3 +1,4 @@
+import 'package:fiap_hackathon/screens/activity/add_activity_screen.dart';
 import 'package:fiap_hackathon/screens/home/home_screen.dart';
 import 'package:fiap_hackathon/screens/login/login_screen.dart';
 import 'package:fiap_hackathon/screens/register/register_screen.dart';
@@ -10,6 +11,8 @@ abstract class AppRoutes {
         return MaterialPageRoute(builder: (context) => const HomeScreen());
       case '/register':
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
+      case '/activity-add':
+        return MaterialPageRoute(builder: (context) => const AddActivityScreen());
       default:
         return MaterialPageRoute(builder: (context) => const LoginScreen());
     }
