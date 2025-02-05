@@ -10,10 +10,13 @@ class FirebaseAuthService {
     }
   }
 
-  Future createUser(String email, String password) async {
+  Future createUser(String email, String password, String displayName) async {
     try {
-      return await FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      await userCredential.user!.updateDisplayName(displayName);
+
+      return FirebaseAuth.instance.currentUser;
     } catch (e) {
       rethrow;
     }

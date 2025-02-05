@@ -24,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Olá, ${_loginProvider.user!.email}'),
+        title: Text(
+            'Olá,${_loginProvider.isProfessor ? ' Prof.' : ''} ${_loginProvider.user!.displayName}'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),

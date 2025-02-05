@@ -12,17 +12,31 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late TextEditingController _displayNameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
 
+  bool _isProfessor = false;
+
   @override
   void initState() {
+    _displayNameController = TextEditingController(text: 'Iago Teste');
     _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
     _passwordController = TextEditingController(text: 'Teste@123');
     _confirmPasswordController = TextEditingController(text: 'Teste@123');
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _displayNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -43,6 +57,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               const Spacer(),
               LabeledTextFieldWidget(
+                controller: _displayNameController,
+                label: 'Nome Completo',
+              ),
+              const SizedBox(height: 12),
+              LabeledTextFieldWidget(
                 controller: _emailController,
                 label: 'E-mail',
               ),
@@ -50,14 +69,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               LabeledTextFieldWidget(
                 controller: _passwordController,
                 label: 'Senha',
+                obscureText: true,
               ),
               const SizedBox(height: 12),
               LabeledTextFieldWidget(
                 controller: _confirmPasswordController,
                 label: 'Confirme sua senha',
+                obscureText: true,
               ),
+              const SizedBox(height: 12),
+              CheckboxListTile(
+                onChanged: (value) =>
+                    setState(() => _isProfessor = value ?? false),
+                value: _isProfessor,
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Sou um professor'),
+              ),
+              const SizedBox(height: 32),
               CustomFilledButtonWidget(
-                  onPressed: _register, title: 'CADASTRAR'),
+                onPressed: _register,
+                title: 'CADASTRAR',
+              ),
               const Spacer(),
             ],
           ),
@@ -69,8 +102,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future _register() async {
     final LoginProvider loginProvider = Provider.of(context, listen: false);
 
-    await loginProvider.createUser(
-        _emailController.text, _passwordController.text);
+    await loginProvider.createUser(_emailController.text,
+        _passwordController.text, _displayNameController.text, _isProfessor);
 
     if (!mounted) return;
 

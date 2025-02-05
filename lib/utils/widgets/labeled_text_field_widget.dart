@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class LabeledTextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final bool obscureText;
 
   const LabeledTextFieldWidget({
     super.key,
     required this.controller,
     required this.label,
+    this.obscureText = false,
   });
 
   @override
@@ -19,6 +21,7 @@ class LabeledTextFieldWidget extends StatelessWidget {
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
+          obscureText: obscureText,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
