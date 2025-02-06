@@ -4,12 +4,14 @@ class LabeledTextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final bool obscureText;
+  final int maxLines;
 
   const LabeledTextFieldWidget({
     super.key,
     required this.controller,
     required this.label,
     this.obscureText = false,
+    this.maxLines = 1,
   });
 
   @override
@@ -22,6 +24,8 @@ class LabeledTextFieldWidget extends StatelessWidget {
         TextFormField(
           controller: controller,
           obscureText: obscureText,
+          minLines: 1,
+          maxLines: maxLines,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),

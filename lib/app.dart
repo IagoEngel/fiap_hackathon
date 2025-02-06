@@ -1,3 +1,4 @@
+import 'package:fiap_hackathon/providers/activity_provider.dart';
 import 'package:fiap_hackathon/providers/login_provider.dart';
 import 'package:fiap_hackathon/routes/app_routes.dart';
 import 'package:fiap_hackathon/utils/decoration_scheme.dart';
@@ -12,6 +13,7 @@ class BaseApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => ActivityProvider()),
       ],
       child: MaterialApp(
         title: 'FIAP Hackathon',

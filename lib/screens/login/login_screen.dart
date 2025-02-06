@@ -41,35 +41,35 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Spacer(),
-                LabeledTextFieldWidget(
-                  controller: _emailController,
-                  label: 'E-mail',
-                ),
-                const SizedBox(height: 12),
-                LabeledTextFieldWidget(
-                  controller: _passwordController,
-                  label: 'Senha',
-                ),
-                const SizedBox(height: 32),
-                CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
-                const SizedBox(height: 4),
-                CustomTextButtonWidget(
-                    onPressed: _register,
-                    title: 'Não tem conta? Faça seu cadastro aqui.'),
-                const Spacer(),
-              ],
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height,
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  LabeledTextFieldWidget(
+                    controller: _emailController,
+                    label: 'E-mail',
+                  ),
+                  const SizedBox(height: 12),
+                  LabeledTextFieldWidget(
+                    controller: _passwordController,
+                    label: 'Senha',
+                  ),
+                  const SizedBox(height: 32),
+                  CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
+                  const SizedBox(height: 4),
+                  CustomTextButtonWidget(
+                      onPressed: _register,
+                      title: 'Não tem conta? Faça seu cadastro aqui.'),
+                ],
+              ),
             ),
           ),
         ),

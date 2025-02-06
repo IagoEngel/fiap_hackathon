@@ -7,15 +7,15 @@ class FirebaseFirestoreService {
     await database.collection('professores').add({"email": email});
   }
 
-  Future getProfessor(String email) async {
+  Future<String> getProfessor(String email) async {
     final collection = await database.collection('professores').get();
     for (var doc in collection.docs) {
       final docMap = doc.data();
       if (docMap['email'] == email) {
-        return true;
+        return doc.id;
       }
     }
 
-    return false;
+    return '';
   }
 }

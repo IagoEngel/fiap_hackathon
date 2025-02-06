@@ -1,5 +1,8 @@
+import 'package:fiap_hackathon/providers/activity_provider.dart';
+import 'package:fiap_hackathon/providers/login_provider.dart';
 import 'package:fiap_hackathon/utils/widgets/labeled_text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddActivityScreen extends StatefulWidget {
   const AddActivityScreen({super.key});
@@ -43,27 +46,29 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
       appBar: AppBar(
         title: const Text('Adicionar atividade'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).viewPadding.top -
-                AppBar().preferredSize.height,
-          ),
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).viewPadding.top -
+              AppBar().preferredSize.height,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LabeledTextFieldWidget(
                   controller: _enunciadoAtividade,
                   label: 'Enunciado atividade',
+                  maxLines: 10,
                 ),
                 const SizedBox(height: 32),
-                _buildAtividades(),
+                _buildActivities(),
                 const SizedBox(height: 32),
                 FilledButton(
-                  onPressed: () {},
+                  onPressed: _createActivity,
                   child: const Text('Adicionar'),
                 ),
               ],
@@ -74,23 +79,69 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     );
   }
 
-  Widget _buildAtividades() {
+  Widget _buildActivities() {
     int count = 0;
 
-    final listaAtividades =
+    final activitiesList =
         [_alternativa1, _alternativa2, _alternativa3, _alternativa4]
             .map((controller) => Padding(
                   padding: EdgeInsets.only(bottom: ++count < 4 ? 20 : 0),
                   child: TextFormField(
                     controller: controller,
+                    minLines: 1,
+                    maxLines: 10,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      labelText: 'Atividade $count',
+                      labelText: 'Alternativa $count',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Preencha este campo!';
+                      }
+
+                      return null;
+                    },
                   ),
                 ))
             .toList();
 
-    return Column(children: listaAtividades);
+    return Column(children: activitiesList);
+  }
+
+  Future _createActivity() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final LoginProvider loginProvider = Provider.of(context, listen: false);
+    final ActivityProvider activityProvider =
+        Provider.of(context, listen: false);
+
+    Map<String, dynamic> activityJson = {
+      'enunciado': _enunciadoAtividade.text,
+      'alternativa1': _alternativa1.text,
+      'alternativa2': _alternativa2.text,
+      'alternativa3': _alternativa3.text,
+      'alternativa4': _alternativa4.text,
+      'professorReference': loginProvider.professorDocumentReference,
+    };
+    await activityProvider.createActivity(activityJson);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (activityProvider.hasError) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Ocorreu um erro'),
+                content: Text(activityProvider.errorMessage),
+              ));
+
+      return;
+    }
+
+    Navigator.pop(context);
   }
 }

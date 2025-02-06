@@ -45,54 +45,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         title: const Text('Crie sua conta!'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).viewPadding.top -
-                AppBar().preferredSize.height,
-          ),
-          child: Column(
-            children: [
-              const Spacer(),
-              LabeledTextFieldWidget(
-                controller: _displayNameController,
-                label: 'Nome Completo',
-              ),
-              const SizedBox(height: 12),
-              LabeledTextFieldWidget(
-                controller: _emailController,
-                label: 'E-mail',
-              ),
-              const SizedBox(height: 12),
-              LabeledTextFieldWidget(
-                controller: _passwordController,
-                label: 'Senha',
-                obscureText: true,
-              ),
-              const SizedBox(height: 12),
-              LabeledTextFieldWidget(
-                controller: _confirmPasswordController,
-                label: 'Confirme sua senha',
-                obscureText: true,
-              ),
-              const SizedBox(height: 12),
-              CheckboxListTile(
-                onChanged: (value) =>
-                    setState(() => _isProfessor = value ?? false),
-                value: _isProfessor,
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Sou um professor'),
-              ),
-              const SizedBox(height: 32),
-              CustomFilledButtonWidget(
-                onPressed: _register,
-                title: 'CADASTRAR',
-              ),
-              const Spacer(),
-            ],
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).viewPadding.top -
+              AppBar().preferredSize.height,
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                LabeledTextFieldWidget(
+                  controller: _displayNameController,
+                  label: 'Nome Completo',
+                ),
+                const SizedBox(height: 12),
+                LabeledTextFieldWidget(
+                  controller: _emailController,
+                  label: 'E-mail',
+                ),
+                const SizedBox(height: 12),
+                LabeledTextFieldWidget(
+                  controller: _passwordController,
+                  label: 'Senha',
+                  obscureText: true,
+                ),
+                const SizedBox(height: 12),
+                LabeledTextFieldWidget(
+                  controller: _confirmPasswordController,
+                  label: 'Confirme sua senha',
+                  obscureText: true,
+                ),
+                const SizedBox(height: 12),
+                CheckboxListTile(
+                  onChanged: (value) =>
+                      setState(() => _isProfessor = value ?? false),
+                  value: _isProfessor,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Sou um professor'),
+                ),
+                const SizedBox(height: 32),
+                CustomFilledButtonWidget(
+                  onPressed: _register,
+                  title: 'CADASTRAR',
+                ),
+              ],
+            ),
           ),
         ),
       ),

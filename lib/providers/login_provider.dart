@@ -4,14 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginProvider extends ChangeNotifier {
-  User? _user;
-  User? get user => _user;
-
   final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
   final FirebaseFirestoreService _firebaseFirestoreService =
       FirebaseFirestoreService();
 
+  User? _user;
+  User? get user => _user;
+
   bool isProfessor = false;
+  String professorDocumentReference = '';
 
   bool hasError = false;
   String errorMessage = '';
@@ -25,8 +26,13 @@ class LoginProvider extends ChangeNotifier {
 
       _user = userCredential.user;
 
-      isProfessor = await _firebaseFirestoreService.getProfessor(email);
+      final String docRef = await _firebaseFirestoreService.getProfessor(email);
+
+      isProfessor = docRef.isNotEmpty;
+      professorDocumentReference = docRef;
     } on FirebaseAuthException catch (e) {
+      debugPrint('getActivities ERROR ==> $e');
+
       hasError = true;
       switch (e.code) {
         case 'invalid-credential':
