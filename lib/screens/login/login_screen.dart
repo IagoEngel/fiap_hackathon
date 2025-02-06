@@ -19,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     _loginProvider = Provider.of(context, listen: false);
@@ -63,11 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: 'Senha',
                   ),
                   const SizedBox(height: 32),
-                  CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
-                  const SizedBox(height: 4),
-                  CustomTextButtonWidget(
-                      onPressed: _register,
-                      title: 'Não tem conta? Faça seu cadastro aqui.'),
+                  _buildButtons(),
                 ],
               ),
             ),
@@ -77,12 +75,31 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildButtons() {
+    return Visibility(
+      visible: !isLoading,
+      replacement: const Center(child: CircularProgressIndicator()),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
+          const SizedBox(height: 4),
+          CustomTextButtonWidget(
+              onPressed: _register,
+              title: 'Não tem conta? Faça seu cadastro aqui.'),
+        ],
+      ),
+    );
+  }
+
   Future _login() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    setState(() => isLoading = true);
     await _loginProvider.login(_emailController.text, _passwordController.text);
+    setState(() => isLoading = false);
 
     if (!mounted) return;
 
