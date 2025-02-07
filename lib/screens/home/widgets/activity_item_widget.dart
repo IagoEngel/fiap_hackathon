@@ -29,27 +29,40 @@ class _ActivityItemWidgetState extends State<ActivityItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      backgroundColor: Colors.grey[200],
-      collapsedBackgroundColor: Colors.grey[300],
-      tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-      childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
-      expandedAlignment: Alignment.centerLeft,
-      title: Text(widget.activity.enunciado),
+    return Stack(
       children: [
-        ..._buildAlternativeItems(),
+        ExpansionTile(
+          backgroundColor: Colors.grey[200],
+          collapsedBackgroundColor: Colors.grey[300],
+          tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+          childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
+          expandedAlignment: Alignment.centerLeft,
+          title: Text(widget.activity.enunciado),
+          children: [
+            ..._buildAlternativeItems(),
+            Visibility(
+              visible: selectedAlternative != 0 &&
+                  widget.activity.alternativaSelecionada == 0,
+              child: CustomFilledButtonWidget(
+                onPressed: () async {
+                  final ActivityProvider activityProvider =
+                      Provider.of(context, listen: false);
+
+                  widget.activity.alternativaSelecionada = selectedAlternative;
+
+                  await activityProvider.confirmSelection(widget.activity);
+                },
+                title: 'Confirmar?',
+              ),
+            ),
+          ],
+        ),
         Visibility(
-          visible: selectedAlternative != 0 && widget.activity.alternativaSelecionada == 0,
-          child: CustomFilledButtonWidget(
-            onPressed: () async {
-              final ActivityProvider activityProvider =
-                  Provider.of(context, listen: false);
-
-              widget.activity.alternativaSelecionada = selectedAlternative;
-
-              await activityProvider.confirmSelection(widget.activity);
-            },
-            title: 'Confirmar?',
+          visible: widget.activity.alternativaSelecionada == 0,
+          child: const Positioned(
+            right: 6,
+            top: 6,
+            child: CircleAvatar(backgroundColor: Colors.amber, radius: 10),
           ),
         ),
       ],
@@ -72,8 +85,10 @@ class _ActivityItemWidgetState extends State<ActivityItemWidget> {
               AlternativeWidget(
                 title: title,
                 selected: selectedAlternative == index,
-                onTap: () => setState(() => selectedAlternative =
-                    index == selectedAlternative ? 0 : index),
+                onTap: widget.activity.alternativaSelecionada == 0
+                    ? () => setState(() => selectedAlternative =
+                        index == selectedAlternative ? 0 : index)
+                    : null,
               ));
         })
         .values

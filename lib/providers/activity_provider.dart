@@ -10,7 +10,7 @@ class ActivityProvider extends ChangeNotifier {
 
   bool hasError = false;
   String errorMessage = '';
-  
+
   Future createActivity(Map<String, dynamic> json) async {
     try {
       hasError = false;
@@ -26,7 +26,8 @@ class ActivityProvider extends ChangeNotifier {
     try {
       hasError = false;
 
-      final responseDocs = await _activityService.getActivities(professorReference);
+      final responseDocs =
+          await _activityService.getActivities(professorReference);
 
       for (var element in responseDocs) {
         _activitiesList.add(ActivityModel.fromDocumentSnapshot(element));
@@ -42,12 +43,18 @@ class ActivityProvider extends ChangeNotifier {
     try {
       hasError = false;
 
-      await _activityService.confirmSelection(activity.toConfirmSelectionJson());
-      
+      await _activityService
+          .confirmSelection(activity.toConfirmSelectionJson());
+
+      _activitiesList
+          .firstWhere((i) => i.documentReference == activity.documentReference)
+          .alternativaSelecionada = activity.alternativaSelecionada;
     } catch (e) {
       debugPrint('getActivities ERROR ==> $e');
       hasError = true;
       errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
     }
+
+    notifyListeners();
   }
 }

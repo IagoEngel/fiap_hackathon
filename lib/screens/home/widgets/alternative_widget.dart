@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AlternativeWidget extends StatelessWidget {
   final String title;
   final bool selected;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const AlternativeWidget({
     super.key,

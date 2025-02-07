@@ -25,14 +25,16 @@ class ActivityService {
     final List<Map<String, dynamic>> returnList = [];
 
     for (var element in activitiesDocs.docs) {
+      final data = element.data() as Map;
+
       final map = {
         'documentReference': element.reference,
-        "professorReference": (element.data()! as Map)['professorReference'],
-        "enunciado": (element.data()! as Map)['enunciado'],
-        "alternativa1": (element.data()! as Map)['alternativa1'],
-        "alternativa2": (element.data()! as Map)['alternativa2'],
-        "alternativa3": (element.data()! as Map)['alternativa3'],
-        "alternativa4": (element.data()! as Map)['alternativa4']
+        "professorReference": data['professorReference'],
+        "enunciado": data['enunciado'],
+        "alternativa1": data['alternativa1'],
+        "alternativa2": data['alternativa2'],
+        "alternativa3": data['alternativa3'],
+        "alternativa4": data['alternativa4']
       };
 
       final atividadeAlunoDocs = await queryAtividadeAlunos
