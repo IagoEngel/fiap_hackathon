@@ -21,8 +21,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void initState() {
-    _displayNameController = TextEditingController(text: 'Iago Teste');
-    _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
+    // _displayNameController = TextEditingController(text: 'Iago Teste');
+    // _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
+    // _passwordController = TextEditingController(text: 'Teste@123');
+    // _confirmPasswordController = TextEditingController(text: 'Teste@123');
+    _displayNameController = TextEditingController(text: 'Iago 123');
+    _emailController = TextEditingController(text: 'iagoengel@yahoo.com');
     _passwordController = TextEditingController(text: 'Teste@123');
     _confirmPasswordController = TextEditingController(text: 'Teste@123');
 
@@ -55,6 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LabeledTextFieldWidget(
                   controller: _displayNameController,

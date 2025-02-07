@@ -1,4 +1,6 @@
 import 'package:fiap_hackathon/providers/login_provider.dart';
+import 'package:fiap_hackathon/screens/home/professor_content_widget.dart';
+import 'package:fiap_hackathon/screens/home/student_content_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,19 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            FilledButton(
-              onPressed: () {},
-              child: const Text('Verificar gráfico de alunos'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pushNamed(context, '/activity-add'),
-              child: const Text('Adicionar atividade'),
-            ),
-          ],
-        ),
+        child: _loginProvider.isProfessor
+            ? ProfessorContentWidget(
+                professorDocumentReference:
+                    _loginProvider.professorDocumentReference)
+            : const StudentContentWidget(),
       ),
     );
   }

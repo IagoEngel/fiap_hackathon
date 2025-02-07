@@ -26,7 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
     _loginProvider = Provider.of(context, listen: false);
 
     _formKey = GlobalKey<FormState>();
-    _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
+    // _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
+    // _passwordController = TextEditingController(text: 'Teste@123');
+    _emailController = TextEditingController(text: 'iagoengel@yahoo.com');
     _passwordController = TextEditingController(text: 'Teste@123');
 
     super.initState();
@@ -81,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
       replacement: const Center(child: CircularProgressIndicator()),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           CustomFilledButtonWidget(onPressed: _login, title: 'ENTRAR'),
           const SizedBox(height: 4),
