@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fiap_hackathon/model/activity_chart_model.dart';
 import 'package:fiap_hackathon/model/activity_model.dart';
 import 'package:fiap_hackathon/services/activity_service.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,9 @@ class ActivityProvider extends ChangeNotifier {
 
   final List<ActivityModel> _activitiesList = [];
   List<ActivityModel> get activitiesList => _activitiesList;
+
+  final List<ActivityChartModel> _activitiesProfessorList = [];
+  List<ActivityChartModel> get activitiesProfessorList => _activitiesProfessorList;
 
   bool hasError = false;
   String errorMessage = '';
@@ -25,6 +30,7 @@ class ActivityProvider extends ChangeNotifier {
   Future getActivities([String professorReference = '']) async {
     try {
       hasError = false;
+      _activitiesList.clear();
 
       final responseDocs =
           await _activityService.getActivities(professorReference);
@@ -34,6 +40,24 @@ class ActivityProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('getActivities ERROR ==> $e');
+      hasError = true;
+      errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
+    }
+  }
+
+  Future getActivitiesAsProfessor(DocumentReference professorReference) async {
+    try {
+      hasError = false;
+      _activitiesProfessorList.clear();
+
+      final responseDocs =
+          await _activityService.getActivitiesAsProfessor(professorReference);
+
+      for (var element in responseDocs) {
+        _activitiesProfessorList.add(ActivityChartModel.fromDocumentSnapshot(element));
+      }
+    } catch (e) {
+      debugPrint('getActivitiesAsProfessor ERROR ==> $e');
       hasError = true;
       errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
     }
@@ -50,7 +74,7 @@ class ActivityProvider extends ChangeNotifier {
           .firstWhere((i) => i.documentReference == activity.documentReference)
           .alternativaSelecionada = activity.alternativaSelecionada;
     } catch (e) {
-      debugPrint('getActivities ERROR ==> $e');
+      debugPrint('confirmSelection ERROR ==> $e');
       hasError = true;
       errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
     }

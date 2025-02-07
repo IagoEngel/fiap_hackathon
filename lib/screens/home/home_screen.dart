@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _loginProvider.isProfessor
             ? ProfessorContentWidget(
                 professorDocumentReference:
-                    _loginProvider.professorDocumentReference)
+                    _loginProvider.professorDocumentReference!)
             : const StudentContentWidget(),
       ),
     );

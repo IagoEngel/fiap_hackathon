@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiap_hackathon/providers/activity_provider.dart';
 import 'package:fiap_hackathon/providers/login_provider.dart';
 import 'package:fiap_hackathon/utils/widgets/labeled_text_field_widget.dart';
@@ -19,6 +20,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   late TextEditingController _alternativa2;
   late TextEditingController _alternativa3;
   late TextEditingController _alternativa4;
+
+  int alternativaCorreta = 0;
 
   @override
   void initState() {
@@ -80,30 +83,43 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   }
 
   Widget _buildActivities() {
-    int count = 0;
+    Map<int, TextEditingController> activities =
+        [_alternativa1, _alternativa2, _alternativa3, _alternativa4].asMap();
 
-    final activitiesList =
-        [_alternativa1, _alternativa2, _alternativa3, _alternativa4]
-            .map((controller) => Padding(
-                  padding: EdgeInsets.only(bottom: ++count < 4 ? 20 : 0),
-                  child: TextFormField(
-                    controller: controller,
-                    minLines: 1,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: 'Alternativa $count',
+    final activitiesList = activities
+        .map((i, controller) => MapEntry(
+            ++i,
+            Padding(
+              padding: EdgeInsets.only(bottom: i < 4 ? 20 : 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller,
+                      minLines: 1,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: 'Alternativa $i',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Preencha este campo!';
+                        }
+
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Preencha este campo!';
-                      }
-
-                      return null;
-                    },
                   ),
-                ))
-            .toList();
+                  Checkbox(
+                    value: alternativaCorreta == i,
+                    onChanged: (_) => setState(() => alternativaCorreta = i),
+                  ),
+                ],
+              ),
+            )))
+        .values
+        .toList();
 
     return Column(children: activitiesList);
   }
@@ -123,6 +139,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
       'alternativa2': _alternativa2.text,
       'alternativa3': _alternativa3.text,
       'alternativa4': _alternativa4.text,
+      'alternativaCorreta': alternativaCorreta,
+      'dataCriacao': Timestamp.now(),
       'professorReference': loginProvider.professorDocumentReference,
     };
     await activityProvider.createActivity(activityJson);

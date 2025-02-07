@@ -3,6 +3,7 @@ import 'package:fiap_hackathon/providers/activity_provider.dart';
 import 'package:fiap_hackathon/screens/home/widgets/alternative_widget.dart';
 import 'package:fiap_hackathon/utils/widgets/custom_filled_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ActivityItemWidget extends StatefulWidget {
@@ -38,6 +39,8 @@ class _ActivityItemWidgetState extends State<ActivityItemWidget> {
           childrenPadding: const EdgeInsets.symmetric(horizontal: 16),
           expandedAlignment: Alignment.centerLeft,
           title: Text(widget.activity.enunciado),
+          subtitle: Text(DateFormat('dd/MM/yyyy HH:mm')
+              .format(widget.activity.dataCriacao.toDate())),
           children: [
             ..._buildAlternativeItems(),
             Visibility(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiap_hackathon/services/firebase_auth_service.dart';
 import 'package:fiap_hackathon/services/firebase_firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,7 @@ class LoginProvider extends ChangeNotifier {
   User? get user => _user;
 
   bool isProfessor = false;
-  String professorDocumentReference = '';
+  DocumentReference? professorDocumentReference;
 
   bool hasError = false;
   String errorMessage = '';
@@ -26,9 +27,9 @@ class LoginProvider extends ChangeNotifier {
 
       _user = userCredential.user;
 
-      final String docRef = await _firebaseFirestoreService.getProfessor(email);
+      final DocumentReference? docRef = await _firebaseFirestoreService.getProfessor(email);
 
-      isProfessor = docRef.isNotEmpty;
+      isProfessor = docRef != null;
       professorDocumentReference = docRef;
     } on FirebaseAuthException catch (e) {
       debugPrint('getActivities ERROR ==> $e');
@@ -53,10 +54,10 @@ class LoginProvider extends ChangeNotifier {
       _user =
           await _firebaseAuthService.createUser(email, password, displayName);
 
-      if (professor) {
-        isProfessor = professor;
-        await _firebaseFirestoreService.createProfessor(email);
-      }
+      isProfessor = professor;
+
+      await _firebaseFirestoreService.createProfessor(
+          isProfessor ? 'professores' : 'alunos', email, displayName);
     } catch (e) {
       hasError = true;
       errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';

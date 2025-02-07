@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiap_hackathon/providers/activity_provider.dart';
+import 'package:fiap_hackathon/screens/home/widgets/pie_chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfessorContentWidget extends StatefulWidget {
-  final String professorDocumentReference;
+  final DocumentReference professorDocumentReference;
 
   const ProfessorContentWidget({
     super.key,
@@ -33,14 +35,22 @@ class _ProfessorContentWidgetState extends State<ProfessorContentWidget> {
           onPressed: () => Navigator.pushNamed(context, '/activity-add'),
           child: const Text('Adicionar atividade'),
         ),
+        const SizedBox(height: 20),
         FutureBuilder(
           future: _activityProvider
-              .getActivities(widget.professorDocumentReference),
+              .getActivitiesAsProfessor(widget.professorDocumentReference),
           builder: (context, snapshot) {
-            return FilledButton(
-              onPressed: () {},
-              child: const Text('Verificar gráfico de alunos'),
-            );
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+                itemCount: _activityProvider.activitiesProfessorList.length,
+                itemBuilder: (context, index) => PieChartWidget(
+                    activity: _activityProvider.activitiesProfessorList[index]));
           },
         ),
       ],

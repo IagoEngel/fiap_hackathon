@@ -8,6 +8,8 @@ class ActivityModel {
   final String alternativa2;
   final String alternativa3;
   final String alternativa4;
+  final int alternativaCorreta;
+  final Timestamp dataCriacao;
   int alternativaSelecionada;
 
   ActivityModel.fromDocumentSnapshot(Map<String, dynamic> json)
@@ -18,18 +20,9 @@ class ActivityModel {
         alternativa2 = json['alternativa2'],
         alternativa3 = json['alternativa3'],
         alternativa4 = json['alternativa4'],
+        alternativaCorreta = json['alternativaCorreta'],
+        dataCriacao = json['dataCriacao'],
         alternativaSelecionada = json['alternativaSelecionada'] ?? 0;
-
-  Map<String, dynamic> toJson() => {
-        'documentReference': documentReference,
-        'professorReference': professorReference,
-        'enunciado': enunciado,
-        'alternativa1': alternativa1,
-        'alternativa2': alternativa2,
-        'alternativa3': alternativa3,
-        'alternativa4': alternativa4,
-        'alternativaSelecionada': alternativaSelecionada
-      };
 
   Map<String, dynamic> toConfirmSelectionJson() => {
         'documentReference': documentReference,
