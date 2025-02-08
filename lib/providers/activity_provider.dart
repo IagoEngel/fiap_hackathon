@@ -27,13 +27,13 @@ class ActivityProvider extends ChangeNotifier {
     }
   }
 
-  Future getActivities([String professorReference = '']) async {
+  Future getActivities() async {
     try {
       hasError = false;
       _activitiesList.clear();
 
       final responseDocs =
-          await _activityService.getActivities(professorReference);
+          await _activityService.getActivities();
 
       for (var element in responseDocs) {
         _activitiesList.add(ActivityModel.fromDocumentSnapshot(element));
@@ -61,6 +61,7 @@ class ActivityProvider extends ChangeNotifier {
       hasError = true;
       errorMessage = 'Ocorreu um erro inesperado. Tente novamente!';
     }
+    notifyListeners();
   }
 
   Future confirmSelection(ActivityModel activity) async {

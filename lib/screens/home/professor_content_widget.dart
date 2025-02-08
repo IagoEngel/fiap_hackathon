@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiap_hackathon/providers/activity_provider.dart';
-import 'package:fiap_hackathon/screens/home/widgets/pie_chart_widget.dart';
+import 'package:fiap_hackathon/screens/home/widgets/chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +49,7 @@ class _ProfessorContentWidgetState extends State<ProfessorContentWidget> {
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemCount: _activityProvider.activitiesProfessorList.length,
-                itemBuilder: (context, index) => PieChartWidget(
+                itemBuilder: (context, index) => ChartWidget(
                     activity: _activityProvider.activitiesProfessorList[index]));
           },
         ),

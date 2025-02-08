@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ActivityService {
   static final database = FirebaseFirestore.instance;
@@ -11,18 +12,15 @@ class ActivityService {
     await database.collection('atividades-alunos').add(json);
   }
 
-  Future<List<Map<String, dynamic>>> getActivities(
-      String professorReference) async {
+  Future<List<Map<String, dynamic>>> getActivities() async {
+    Query queryAlunos = database.collection('alunos');
     Query queryAtividades = database.collection('atividades');
     Query queryAtividadeAlunos = database.collection('atividades-alunos');
 
-    if (professorReference.isNotEmpty) {
-      queryAtividades = queryAtividades.where('professorReference',
-          isEqualTo: professorReference);
-
-      queryAtividadeAlunos = queryAtividadeAlunos.where('professorReference',
-          isEqualTo: professorReference);
-    }
+    final studentsDocs = await queryAlunos
+        .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email!)
+        .get();
+    final studentReference = studentsDocs.docs[0].reference;
 
     final activitiesDocs = await queryAtividades.get();
 
@@ -44,7 +42,7 @@ class ActivityService {
       };
 
       final atividadeAlunoDocs = await queryAtividadeAlunos
-          .where('documentReference', isEqualTo: element.reference)
+          .where('alunoReference', isEqualTo: studentReference)
           .get();
 
       if (atividadeAlunoDocs.docs.isNotEmpty) {

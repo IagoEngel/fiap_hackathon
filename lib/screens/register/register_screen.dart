@@ -18,6 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController _confirmPasswordController;
 
   bool _isProfessor = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -25,8 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
     // _passwordController = TextEditingController(text: 'Teste@123');
     // _confirmPasswordController = TextEditingController(text: 'Teste@123');
-    _displayNameController = TextEditingController(text: 'Iago 123');
-    _emailController = TextEditingController(text: 'iagoengel@yahoo.com');
+    _displayNameController = TextEditingController(text: 'Iago 2');
+    _emailController = TextEditingController(text: 'iagoengel2@yahoo.com');
     _passwordController = TextEditingController(text: 'Teste@123');
     _confirmPasswordController = TextEditingController(text: 'Teste@123');
 
@@ -74,13 +75,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 LabeledTextFieldWidget(
                   controller: _passwordController,
                   label: 'Senha',
-                  obscureText: true,
+                  isPassword: true,
                 ),
                 const SizedBox(height: 12),
                 LabeledTextFieldWidget(
                   controller: _confirmPasswordController,
                   label: 'Confirme sua senha',
-                  obscureText: true,
+                  isPassword: true,
                 ),
                 const SizedBox(height: 12),
                 CheckboxListTile(
@@ -92,9 +93,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   title: const Text('Sou um professor'),
                 ),
                 const SizedBox(height: 32),
-                CustomFilledButtonWidget(
-                  onPressed: _register,
-                  title: 'CADASTRAR',
+                Visibility(
+                  visible: !_isLoading,
+                  replacement: const Center(child: CircularProgressIndicator()),
+                  child: CustomFilledButtonWidget(
+                    onPressed: _register,
+                    title: 'CADASTRAR',
+                  ),
                 ),
               ],
             ),
@@ -105,10 +110,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future _register() async {
+    setState(() => _isLoading = !_isLoading);
+
     final LoginProvider loginProvider = Provider.of(context, listen: false);
 
     await loginProvider.createUser(_emailController.text,
         _passwordController.text, _displayNameController.text, _isProfessor);
+
+    setState(() => _isLoading = !_isLoading);
 
     if (!mounted) return;
 

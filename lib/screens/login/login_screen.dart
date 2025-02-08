@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey = GlobalKey<FormState>();
     _emailController = TextEditingController(text: 'iagoengelteste@yahoo.com');
     _passwordController = TextEditingController(text: 'Teste@123');
-    // _emailController = TextEditingController(text: 'iagoengel@yahoo.com');
+    // _emailController = TextEditingController(text: 'iagoengel2@yahoo.com');
     // _passwordController = TextEditingController(text: 'Teste@123');
 
     super.initState();
@@ -65,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   LabeledTextFieldWidget(
                     controller: _passwordController,
                     label: 'Senha',
+                    isPassword: true,
                   ),
                   const SizedBox(height: 32),
                   _buildButtons(),

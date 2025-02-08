@@ -27,11 +27,11 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   void initState() {
     _formKey = GlobalKey<FormState>();
 
-    _enunciadoAtividade = TextEditingController();
-    _alternativa1 = TextEditingController();
-    _alternativa2 = TextEditingController();
-    _alternativa3 = TextEditingController();
-    _alternativa4 = TextEditingController();
+    _enunciadoAtividade = TextEditingController(text: 'João tinha 15 balas e deu 7 para seu amigo Pedro. Com quantas balas João ficou?');
+    _alternativa1 = TextEditingController(text: '6');
+    _alternativa2 = TextEditingController(text: '7');
+    _alternativa3 = TextEditingController(text: '8');
+    _alternativa4 = TextEditingController(text: '9');
 
     super.initState();
   }
@@ -72,7 +72,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                 const SizedBox(height: 32),
                 FilledButton(
                   onPressed: _createActivity,
-                  child: const Text('Adicionar'),
+                  child: const Text('ADICIONAR'),
                 ),
               ],
             ),
@@ -144,6 +144,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
       'professorReference': loginProvider.professorDocumentReference,
     };
     await activityProvider.createActivity(activityJson);
+    await activityProvider.getActivitiesAsProfessor(loginProvider.professorDocumentReference!);
 
     if (!mounted) {
       return;

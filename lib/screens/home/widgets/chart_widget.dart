@@ -1,24 +1,28 @@
 import 'package:fiap_hackathon/model/activity_chart_model.dart';
 import 'package:flutter/material.dart';
 
-class PieChartWidget extends StatefulWidget {
+class ChartWidget extends StatefulWidget {
   final ActivityChartModel activity;
 
-  const PieChartWidget({super.key, required this.activity});
+  const ChartWidget({super.key, required this.activity});
 
   @override
-  State<PieChartWidget> createState() => _PieChartWidgetState();
+  State<ChartWidget> createState() => _ChartWidgetState();
 }
 
-class _PieChartWidgetState extends State<PieChartWidget> {
+class _ChartWidgetState extends State<ChartWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Enunciado:\n${widget.activity.enunciado}'),
+        Text(
+          'Enunciado:\n${widget.activity.enunciado}',
+          style: const TextStyle(fontSize: 16),
+        ),
         Container(
-          margin: const EdgeInsets.only(top: 2),
+          margin: const EdgeInsets.only(top: 2, bottom: 12),
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,14 +64,16 @@ class _PieChartWidgetState extends State<PieChartWidget> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if ((element.value['qtd'] as double) != 0)
-            Text((element.value['qtd'] as double).toStringAsFixed(0)),
+          Text((element.value['qtd'] as double).toStringAsFixed(0)),
           Container(
-            color: Colors.red,
+            color: Colors.purple[300],
             width: 20,
             height: height,
           ),
-          Text(element.key),
+          Text(
+            element.key,
+            style: const TextStyle(fontSize: 16),
+          ),
         ],
       ));
     }
